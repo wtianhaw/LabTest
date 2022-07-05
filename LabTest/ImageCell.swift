@@ -31,8 +31,10 @@ class ImageCell: UICollectionViewCell {
     
     var model: ImageListItem? {
         didSet {
-            guard let model = model else { return }
-            ImageLoadingHelper.loadImageWithUrl(urlString: model.downloadURL ?? "" , imageView: self.thumbnail, placeHolder:  UIImage(named: "icon_search"))
+            guard let model = model, let height = model.height, let width = model.width, let downloadUrl = model.downloadURL else { return }
+            var newUrl = downloadUrl.replacingOccurrences(of: height.description, with: "300").replacingOccurrences(of: width.description, with: "200")
+            
+            ImageLoadingHelper.loadImageWithUrl(urlString: newUrl , imageView: self.thumbnail, placeHolder:  UIImage(named: "icon_search"))
         }
     }
     
